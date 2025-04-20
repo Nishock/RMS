@@ -23,7 +23,7 @@ export const login = async (
       ...(role === 'teacher' ? { teacherId } : {}),
       ...(role === 'student' ? { rollNumber } : {}),
     }, {
-      withCredentials: true, // include cookies if needed
+      withCredentials: false,
     });
 
     const { token, user } = response.data;
@@ -61,7 +61,7 @@ export const signup = async (data: {
 }): Promise<LoginResponse> => {
   try {
     const response = await axios.post(`${API_URL}/auth/signup`, data, {
-      withCredentials: true,
+      withCredentials: false,
     });
 
     const { token, user } = response.data;
@@ -93,7 +93,7 @@ export const verifyToken = async (token: string): Promise<LoginResponse> => {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-      withCredentials: true,
+      withCredentials: false,
     });
 
     const { user } = response.data;

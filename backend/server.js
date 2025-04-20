@@ -6,21 +6,27 @@ const authRoutes = require('./routes/auth');
 
 const app = express();
 
-// ✅ CORS configuration
-const allowedOrigins = ['https://rms-amin.vercel.app']; // frontend domain
-
-app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
+// ✅ CORS setup
+const corsOptions = {
+  origin: ['https://rms-amin.vercel.app'],
   credentials: true,
-}));
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+};
 
+// ✅ Enable CORS for all routes
+app.use(cors(corsOptions));
+
+// ✅ Handle preflight OPTIONS
+app.options('*', cors(corsOptions));
+
+// ✅ Body parser
 app.use(express.json());
+
+// ✅ Health check route
+app.get('/', (req, res) => {
+  res.send('RMS backend live ✅');
+});
 
 // ✅ MongoDB Atlas connection
 mongoose.connect(process.env.MONGODB_URI, {
@@ -40,14 +46,6 @@ mongoose.connect(process.env.MONGODB_URI, {
 
 // ✅ Routes
 app.use('/api/auth', authRoutes);
-
-// ✅ Health check endpoint
-app.get('/health', (req, res) => {
-  res.json({ 
-    status: 'OK',
-    mongodb: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected'
-  });
-});
 
 // ✅ Error handling
 app.use((err, req, res, next) => {
