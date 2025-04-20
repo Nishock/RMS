@@ -22,22 +22,30 @@ export const login = async (
       role,
       ...(role === 'teacher' ? { teacherId } : {}),
       ...(role === 'student' ? { rollNumber } : {}),
+    }, {
+      withCredentials: true, // include cookies if needed
     });
 
-    if (response.data.token) {
-      localStorage.setItem('token', response.data.token);
-      localStorage.setItem('user', JSON.stringify(response.data.user));
+    const { token, user } = response.data;
+
+    if (token) {
+      localStorage.setItem('token', token);
+      localStorage.setItem('user', JSON.stringify(user));
     }
 
-    // Ensure the role is of the correct type
-    const userData = response.data.user;
-    if (!['admin', 'teacher', 'student'].includes(userData.role)) {
+    if (!['admin', 'teacher', 'student'].includes(user.role)) {
       throw new Error('Invalid role received from server');
     }
 
-    return response.data as LoginResponse;
-  } catch (error) {
-    throw error;
+    return { token, user };
+  } catch (error: any) {
+    if (error.response?.data?.message) {
+      throw new Error(error.response.data.message);
+    } else if (error.request) {
+      throw new Error('No response from server');
+    } else {
+      throw new Error(error.message || 'Login failed');
+    }
   }
 };
 
@@ -52,47 +60,50 @@ export const signup = async (data: {
   teacherId?: string;
 }): Promise<LoginResponse> => {
   try {
-    const response = await axios.post(`${API_URL}/auth/signup`, data);
-    
-    if (response.data.token) {
-      localStorage.setItem('token', response.data.token);
-      localStorage.setItem('user', JSON.stringify(response.data.user));
+    const response = await axios.post(`${API_URL}/auth/signup`, data, {
+      withCredentials: true,
+    });
+
+    const { token, user } = response.data;
+
+    if (token) {
+      localStorage.setItem('token', token);
+      localStorage.setItem('user', JSON.stringify(user));
     }
-    
-    // Ensure the role is of the correct type
-    const userData = response.data.user;
-    if (!['admin', 'teacher', 'student'].includes(userData.role)) {
+
+    if (!['admin', 'teacher', 'student'].includes(user.role)) {
       throw new Error('Invalid role received from server');
     }
-    
-    return response.data as LoginResponse;
+
+    return { token, user };
   } catch (error: any) {
-    if (error.response) {
-      // The request was made and the server responded with a status code
-      // that falls out of the range of 2xx
-      throw new Error(error.response.data.message || 'Signup failed');
+    if (error.response?.data?.message) {
+      throw new Error(error.response.data.message);
     } else if (error.request) {
-      // The request was made but no response was received
       throw new Error('No response from server');
     } else {
-      // Something happened in setting up the request that triggered an Error
       throw new Error(error.message || 'Signup failed');
     }
   }
 };
 
 export const verifyToken = async (token: string): Promise<LoginResponse> => {
-  const response = await axios.get(`${API_URL}/auth/verify`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-  
-  // Ensure the role is of the correct type
-  const userData = response.data.user;
-  if (!['admin', 'teacher', 'student'].includes(userData.role)) {
-    throw new Error('Invalid role received from server');
+  try {
+    const response = await axios.get(`${API_URL}/auth/verify`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      withCredentials: true,
+    });
+
+    const { user } = response.data;
+
+    if (!['admin', 'teacher', 'student'].includes(user.role)) {
+      throw new Error('Invalid role received from server');
+    }
+
+    return response.data as LoginResponse;
+  } catch (error: any) {
+    throw new Error('Token verification failed');
   }
-  
-  return response.data as LoginResponse;
-}; 
+};
