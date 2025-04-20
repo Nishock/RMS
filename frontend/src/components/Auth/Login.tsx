@@ -6,66 +6,13 @@ import {
   Typography,
   InputAdornment,
   IconButton,
-  FormControl,
-  InputLabel,
-  Select,
   MenuItem,
   Paper,
-  styled,
   Container,
 } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { UserRole } from '../../types';
-
-// Styled components
-const StyledTextField = styled(TextField)({
-  '& .MuiOutlinedInput-root': {
-    borderRadius: 25,
-    backgroundColor: '#fff',
-    boxShadow: '0 2px 6px rgba(0,0,0,0.1)',
-    '&:hover': {
-      backgroundColor: '#fff',
-      boxShadow: '0 4px 8px rgba(0,0,0,0.15)',
-    },
-    '&.Mui-focused': {
-      backgroundColor: '#fff',
-      boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
-    }
-  },
-  '& .MuiOutlinedInput-input': {
-    padding: '16px 20px',
-    color: '#333',
-    fontSize: '1rem',
-  },
-  '& .MuiInputLabel-root': {
-    color: '#666',
-    fontSize: '1rem',
-    '&.Mui-focused': {
-      color: '#2196f3',
-    }
-  },
-  '& .MuiOutlinedInput-notchedOutline': {
-    borderColor: '#e0e0e0',
-  },
-});
-
-const StyledSelect = styled(Select)({
-  borderRadius: 25,
-  backgroundColor: '#fff',
-  boxShadow: '0 2px 6px rgba(0,0,0,0.1)',
-  '&:hover': {
-    backgroundColor: '#fff',
-    boxShadow: '0 4px 8px rgba(0,0,0,0.15)',
-  },
-  '& .MuiSelect-select': {
-    padding: '16px 20px',
-    color: '#333',
-  },
-  '& .MuiOutlinedInput-notchedOutline': {
-    borderColor: '#e0e0e0',
-  },
-});
 
 interface LoginProps {
   onLogin: (credentials: {
@@ -117,84 +64,213 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
           alignItems: 'center',
         }}
       >
-        <Typography component="h1" variant="h5">
-          Sign in
-        </Typography>
-        {error && (
-          <Typography color="error" sx={{ mt: 2 }}>
-            {error}
+        <Paper
+          elevation={3}
+          sx={{
+            p: 4,
+            width: '100%',
+            borderRadius: 2,
+            backgroundColor: 'white',
+          }}
+        >
+          <Typography
+            component="h1"
+            variant="h4"
+            sx={{
+              mb: 3,
+              fontWeight: 600,
+              color: '#1a237e',
+              textAlign: 'center'
+            }}
+          >
+            Welcome Back
           </Typography>
-        )}
-        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
-            autoFocus
-            value={formData.email}
-            onChange={handleChange}
-          />
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-            value={formData.password}
-            onChange={handleChange}
-          />
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            name="role"
-            label="Role"
-            select
-            value={formData.role}
-            onChange={handleChange}
-          >
-            <MenuItem value="student">Student</MenuItem>
-            <MenuItem value="teacher">Teacher</MenuItem>
-            <MenuItem value="admin">Admin</MenuItem>
-          </TextField>
-          {formData.role === 'teacher' && (
+          
+          {error && (
+            <Typography 
+              color="error" 
+              sx={{ 
+                mt: 1, 
+                mb: 2,
+                textAlign: 'center',
+                backgroundColor: '#ffebee',
+                p: 1,
+                borderRadius: 1
+              }}
+            >
+              {error}
+            </Typography>
+          )}
+
+          <Box component="form" onSubmit={handleSubmit}>
             <TextField
               margin="normal"
               required
               fullWidth
-              name="teacherId"
-              label="Teacher ID"
-              value={formData.teacherId}
+              id="email"
+              label="Email Address"
+              name="email"
+              autoComplete="email"
+              autoFocus
+              value={formData.email}
               onChange={handleChange}
+              sx={{
+                '& .MuiOutlinedInput-root': {
+                  '&.Mui-focused fieldset': {
+                    borderColor: '#1a237e',
+                  },
+                },
+                '& label.Mui-focused': {
+                  color: '#1a237e',
+                },
+              }}
             />
-          )}
-          {formData.role === 'student' && (
+            
             <TextField
               margin="normal"
               required
               fullWidth
-              name="rollNumber"
-              label="Roll Number"
-              value={formData.rollNumber}
+              name="password"
+              label="Password"
+              type={showPassword ? 'text' : 'password'}
+              id="password"
+              autoComplete="current-password"
+              value={formData.password}
               onChange={handleChange}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={() => setShowPassword(!showPassword)}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+              sx={{
+                '& .MuiOutlinedInput-root': {
+                  '&.Mui-focused fieldset': {
+                    borderColor: '#1a237e',
+                  },
+                },
+                '& label.Mui-focused': {
+                  color: '#1a237e',
+                },
+              }}
             />
-          )}
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-          >
-            Sign In
-          </Button>
-        </Box>
+
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="role"
+              label="Role"
+              select
+              value={formData.role}
+              onChange={handleChange}
+              sx={{
+                '& .MuiOutlinedInput-root': {
+                  '&.Mui-focused fieldset': {
+                    borderColor: '#1a237e',
+                  },
+                },
+                '& label.Mui-focused': {
+                  color: '#1a237e',
+                },
+              }}
+            >
+              <MenuItem value="student">Student</MenuItem>
+              <MenuItem value="teacher">Teacher</MenuItem>
+              <MenuItem value="admin">Admin</MenuItem>
+            </TextField>
+
+            {formData.role === 'teacher' && (
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                name="teacherId"
+                label="Teacher ID"
+                value={formData.teacherId}
+                onChange={handleChange}
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    '&.Mui-focused fieldset': {
+                      borderColor: '#1a237e',
+                    },
+                  },
+                  '& label.Mui-focused': {
+                    color: '#1a237e',
+                  },
+                }}
+              />
+            )}
+
+            {formData.role === 'student' && (
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                name="rollNumber"
+                label="Roll Number"
+                value={formData.rollNumber}
+                onChange={handleChange}
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    '&.Mui-focused fieldset': {
+                      borderColor: '#1a237e',
+                    },
+                  },
+                  '& label.Mui-focused': {
+                    color: '#1a237e',
+                  },
+                }}
+              />
+            )}
+
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{
+                mt: 3,
+                mb: 2,
+                py: 1.5,
+                backgroundColor: '#1a237e',
+                '&:hover': {
+                  backgroundColor: '#283593',
+                },
+                fontSize: '1rem',
+                fontWeight: 600,
+              }}
+            >
+              Sign In
+            </Button>
+
+            <Box sx={{ textAlign: 'center', mt: 2 }}>
+              <Typography variant="body2" color="text.secondary">
+                Don't have an account?{' '}
+                <Button
+                  onClick={() => navigate('/signup')}
+                  sx={{
+                    textTransform: 'none',
+                    color: '#1a237e',
+                    fontWeight: 600,
+                    '&:hover': {
+                      backgroundColor: 'transparent',
+                      textDecoration: 'underline',
+                    },
+                  }}
+                >
+                  Sign Up
+                </Button>
+              </Typography>
+            </Box>
+          </Box>
+        </Paper>
       </Box>
     </Container>
   );
