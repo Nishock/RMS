@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { User } from '../types';
+import { User, UserRole } from '../types';
+import { defaultAccounts } from '../data/defaultAccounts';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
 
@@ -11,41 +12,42 @@ export interface LoginResponse {
 export const login = async (
   email: string,
   password: string,
-  role: string,
+  role: UserRole,
   teacherId?: string,
   rollNumber?: string
 ): Promise<LoginResponse> => {
   try {
-    const response = await axios.post(`${API_URL}/auth/login`, {
-      email,
-      password,
-      role,
-      ...(role === 'teacher' ? { teacherId } : {}),
-      ...(role === 'student' ? { rollNumber } : {}),
-    }, {
-      withCredentials: false,
-    });
+    // Find matching default account
+    const account = defaultAccounts.find(acc => 
+      acc.email === email && 
+      acc.password === password && 
+      acc.role === role &&
+      (role !== 'teacher' || acc.teacherId === teacherId) &&
+      (role !== 'student' || acc.rollNumber === rollNumber)
+    );
 
-    const { token, user } = response.data;
-
-    if (token) {
-      localStorage.setItem('token', token);
-      localStorage.setItem('user', JSON.stringify(user));
+    if (!account) {
+      throw new Error('Invalid credentials');
     }
 
-    if (!['admin', 'teacher', 'student'].includes(user.role)) {
-      throw new Error('Invalid role received from server');
-    }
+    // Generate a mock token
+    const token = btoa(JSON.stringify({ userId: email, role }));
+
+    // Create user object
+    const user: User = {
+      ...account,
+      _id: email,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+
+    // Store in localStorage
+    localStorage.setItem('token', token);
+    localStorage.setItem('user', JSON.stringify(user));
 
     return { token, user };
   } catch (error: any) {
-    if (error.response?.data?.message) {
-      throw new Error(error.response.data.message);
-    } else if (error.request) {
-      throw new Error('No response from server');
-    } else {
-      throw new Error(error.message || 'Login failed');
-    }
+    throw new Error(error.message || 'Login failed');
   }
 };
 
@@ -55,54 +57,59 @@ export const signup = async (data: {
   email: string;
   password: string;
   phone: string;
-  role: string;
+  role: UserRole;
   rollNumber?: string;
   teacherId?: string;
 }): Promise<LoginResponse> => {
   try {
-    const response = await axios.post(`${API_URL}/auth/signup`, data, {
-      withCredentials: false,
-    });
-
-    const { token, user } = response.data;
-
-    if (token) {
-      localStorage.setItem('token', token);
-      localStorage.setItem('user', JSON.stringify(user));
+    // Check if account already exists
+    const exists = defaultAccounts.some(acc => acc.email === data.email);
+    if (exists) {
+      throw new Error('User already exists');
     }
 
-    if (!['admin', 'teacher', 'student'].includes(user.role)) {
-      throw new Error('Invalid role received from server');
+    // For demo, we'll just login with default account based on role
+    const defaultAccount = defaultAccounts.find(acc => acc.role === data.role);
+    if (!defaultAccount) {
+      throw new Error('Invalid role');
     }
 
-    return { token, user };
+    return login(
+      defaultAccount.email,
+      defaultAccount.password,
+      defaultAccount.role,
+      data.teacherId,
+      data.rollNumber
+    );
   } catch (error: any) {
-    if (error.response?.data?.message) {
-      throw new Error(error.response.data.message);
-    } else if (error.request) {
-      throw new Error('No response from server');
-    } else {
-      throw new Error(error.message || 'Signup failed');
-    }
+    throw new Error(error.message || 'Signup failed');
   }
 };
 
 export const verifyToken = async (token: string): Promise<LoginResponse> => {
   try {
-    const response = await axios.get(`${API_URL}/auth/verify`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      withCredentials: false,
-    });
+    // Decode token
+    const decoded = JSON.parse(atob(token));
+    
+    // Find matching default account
+    const account = defaultAccounts.find(acc => 
+      acc.email === decoded.userId && 
+      acc.role === decoded.role
+    );
 
-    const { user } = response.data;
-
-    if (!['admin', 'teacher', 'student'].includes(user.role)) {
-      throw new Error('Invalid role received from server');
+    if (!account) {
+      throw new Error('Invalid token');
     }
 
-    return response.data as LoginResponse;
+    // Create user object
+    const user: User = {
+      ...account,
+      _id: account.email,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+
+    return { token, user };
   } catch (error: any) {
     throw new Error('Token verification failed');
   }

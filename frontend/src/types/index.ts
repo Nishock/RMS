@@ -1,12 +1,16 @@
+export type UserRole = 'admin' | 'teacher' | 'student';
+
 export interface User {
   _id: string;
   name: string;
   username: string;
   email: string;
+  role: UserRole;
   phone: string;
-  role: 'admin' | 'teacher' | 'student';
-  rollNumber?: string;  // for students
-  teacherId?: string;   // for teachers
+  teacherId?: string;
+  rollNumber?: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface AuthState {
