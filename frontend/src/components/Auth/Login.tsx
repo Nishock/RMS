@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Button,
@@ -12,9 +12,11 @@ import {
   MenuItem,
   Paper,
   styled,
+  Container,
 } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
+import { UserRole } from '../../types';
 
 // Styled components
 const StyledTextField = styled(TextField)({
@@ -66,229 +68,134 @@ const StyledSelect = styled(Select)({
 });
 
 interface LoginProps {
-  onLogin: (credentials: { email: string; password: string; role: string; teacherId?: string; rollNumber?: string }) => Promise<void>;
+  onLogin: (credentials: {
+    email: string;
+    password: string;
+    role: UserRole;
+    teacherId?: string;
+    rollNumber?: string;
+  }) => Promise<void>;
 }
-
-type UserRole = 'student' | 'teacher' | 'admin';
 
 export const Login: React.FC<LoginProps> = ({ onLogin }) => {
   const navigate = useNavigate();
-  const [formData, setFormData] = React.useState({
+  const [formData, setFormData] = useState({
     email: '',
     password: '',
     role: 'student' as UserRole,
     teacherId: '',
     rollNumber: '',
   });
-  const [showPassword, setShowPassword] = React.useState(false);
-  const [error, setError] = React.useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState<string>('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     try {
-      const loginData = {
-        email: formData.email,
-        password: formData.password,
-        role: formData.role,
-        ...(formData.role === 'teacher' ? { teacherId: formData.teacherId } : {}),
-        ...(formData.role === 'student' ? { rollNumber: formData.rollNumber } : {}),
-      };
-      await onLogin(loginData);
-    } catch (err) {
-      setError('Invalid credentials. Please try again.');
+      await onLogin(formData);
+    } catch (err: any) {
+      setError(err.message || 'Login failed');
     }
   };
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
   return (
-    <Box
-      sx={{
-        minHeight: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        background: 'linear-gradient(135deg, #6B73FF 0%, #000DFF 100%)',
-        p: 2,
-      }}
-    >
-      <Paper
-        elevation={24}
+    <Container component="main" maxWidth="xs">
+      <Box
         sx={{
-          maxWidth: 400,
-          width: '100%',
-          background: '#fff',
-          borderRadius: 4,
-          overflow: 'hidden',
-          boxShadow: '0 10px 30px rgba(0,0,0,0.2)',
+          marginTop: 8,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
         }}
       >
-        <Box
-          sx={{
-            background: 'linear-gradient(135deg, #6B73FF 0%, #000DFF 100%)',
-            p: 3,
-            textAlign: 'center',
-            boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
-          }}
-        >
-          <Typography 
-            variant="h4" 
-            sx={{ 
-              color: 'white', 
-              fontWeight: 600,
-              mb: 1,
-              textShadow: '0 2px 4px rgba(0,0,0,0.2)'
-            }}
-          >
-            Welcome Back
+        <Typography component="h1" variant="h5">
+          Sign in
+        </Typography>
+        {error && (
+          <Typography color="error" sx={{ mt: 2 }}>
+            {error}
           </Typography>
-          <Typography 
-            variant="body1" 
-            sx={{ 
-              color: 'rgba(255, 255, 255, 0.9)',
-              mb: 1,
-              textShadow: '0 1px 2px rgba(0,0,0,0.1)'
-            }}
+        )}
+        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="email"
+            label="Email Address"
+            name="email"
+            autoComplete="email"
+            autoFocus
+            value={formData.email}
+            onChange={handleChange}
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label="Password"
+            type="password"
+            id="password"
+            autoComplete="current-password"
+            value={formData.password}
+            onChange={handleChange}
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="role"
+            label="Role"
+            select
+            value={formData.role}
+            onChange={handleChange}
           >
-            Sign in to continue
-          </Typography>
-        </Box>
-
-        <Box sx={{ p: 4 }}>
-          <form onSubmit={handleSubmit}>
-            <StyledTextField
-              fullWidth
-              label="Email"
-              variant="outlined"
-              type="email"
-              value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              sx={{ mb: 3 }}
+            <MenuItem value="student">Student</MenuItem>
+            <MenuItem value="teacher">Teacher</MenuItem>
+            <MenuItem value="admin">Admin</MenuItem>
+          </TextField>
+          {formData.role === 'teacher' && (
+            <TextField
+              margin="normal"
               required
-            />
-
-            <StyledTextField
               fullWidth
-              label="Password"
-              variant="outlined"
-              type={showPassword ? 'text' : 'password'}
-              value={formData.password}
-              onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-              sx={{ mb: 3 }}
+              name="teacherId"
+              label="Teacher ID"
+              value={formData.teacherId}
+              onChange={handleChange}
+            />
+          )}
+          {formData.role === 'student' && (
+            <TextField
+              margin="normal"
               required
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      onClick={() => setShowPassword(!showPassword)}
-                      edge="end"
-                      sx={{ color: '#666' }}
-                    >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-            />
-
-            <FormControl fullWidth sx={{ mb: 3 }}>
-              <InputLabel sx={{ color: '#666' }}>Role</InputLabel>
-              <StyledSelect
-                value={formData.role}
-                label="Role"
-                onChange={(e) => setFormData({ ...formData, role: e.target.value as UserRole })}
-              >
-                <MenuItem value="student">Student</MenuItem>
-                <MenuItem value="teacher">Teacher</MenuItem>
-                <MenuItem value="admin">Admin</MenuItem>
-              </StyledSelect>
-            </FormControl>
-
-            {formData.role === 'teacher' && (
-              <StyledTextField
-                fullWidth
-                label="Teacher ID"
-                variant="outlined"
-                value={formData.teacherId}
-                onChange={(e) => setFormData({ ...formData, teacherId: e.target.value })}
-                sx={{ mb: 3 }}
-                required
-              />
-            )}
-
-            {formData.role === 'student' && (
-              <StyledTextField
-                fullWidth
-                label="Roll Number"
-                variant="outlined"
-                value={formData.rollNumber}
-                onChange={(e) => setFormData({ ...formData, rollNumber: e.target.value })}
-                sx={{ mb: 3 }}
-                required
-              />
-            )}
-
-            {error && (
-              <Typography 
-                color="error" 
-                sx={{ 
-                  mb: 2, 
-                  textAlign: 'center',
-                  fontWeight: 500,
-                  textShadow: '0 1px 2px rgba(0,0,0,0.05)'
-                }}
-              >
-                {error}
-              </Typography>
-            )}
-
-            <Button
-              type="submit"
               fullWidth
-              variant="contained"
-              size="large"
-              sx={{
-                mb: 3,
-                py: 1.5,
-                borderRadius: 25,
-                fontSize: '1.1rem',
-                textTransform: 'none',
-                background: 'linear-gradient(135deg, #6B73FF 0%, #000DFF 100%)',
-                boxShadow: '0 4px 15px rgba(0,0,0,0.2)',
-                '&:hover': {
-                  background: 'linear-gradient(135deg, #000DFF 0%, #6B73FF 100%)',
-                  boxShadow: '0 6px 20px rgba(0,0,0,0.3)',
-                },
-              }}
-            >
-              Sign In
-            </Button>
-
-            <Typography 
-              variant="body2" 
-              align="center"
-              sx={{ 
-                color: '#666',
-                textShadow: '0 1px 2px rgba(0,0,0,0.05)'
-              }}
-            >
-              Don't have an account?{' '}
-              <Button
-                onClick={() => navigate('/signup')}
-                sx={{ 
-                  textTransform: 'none',
-                  fontWeight: 600,
-                  color: '#000DFF',
-                  '&:hover': {
-                    backgroundColor: 'rgba(0, 13, 255, 0.05)',
-                  }
-                }}
-              >
-                Sign Up
-              </Button>
-            </Typography>
-          </form>
+              name="rollNumber"
+              label="Roll Number"
+              value={formData.rollNumber}
+              onChange={handleChange}
+            />
+          )}
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+          >
+            Sign In
+          </Button>
         </Box>
-      </Paper>
-    </Box>
+      </Box>
+    </Container>
   );
 }; 

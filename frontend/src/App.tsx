@@ -7,7 +7,7 @@ import { Layout } from './components/Layout/Layout';
 import { AIAssistant } from './components/AIAssistant/AIAssistant';
 import { Login } from './components/Auth/Login';
 import { Signup } from './components/Auth/Signup';
-import { AuthState, User } from './types';
+import { AuthState, User, UserRole } from './types';
 import * as authService from './services/auth.service';
 import { DashboardOverview } from './components/Admin/Dashboard/DashboardOverview';
 import { TeacherManagement } from './components/Admin/Teachers/TeacherManagement';
@@ -90,7 +90,7 @@ const AppContent: React.FC = () => {
   const handleLogin = async (credentials: {
     email: string;
     password: string;
-    role: string;
+    role: UserRole;
     teacherId?: string;
     rollNumber?: string;
   }) => {
@@ -130,7 +130,7 @@ const AppContent: React.FC = () => {
     email: string;
     password: string;
     phone: string;
-    role: string;
+    role: UserRole;
     rollNumber?: string;
     teacherId?: string;
   }) => {
