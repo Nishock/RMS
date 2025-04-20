@@ -62,6 +62,10 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
+          minHeight: '100vh',
+          backgroundColor: '#121212',
+          pt: 4,
+          pb: 4,
         }}
       >
         <Paper
@@ -70,7 +74,8 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
             p: 4,
             width: '100%',
             borderRadius: 2,
-            backgroundColor: 'white',
+            backgroundColor: '#1e1e1e',
+            border: '1px solid #333',
           }}
         >
           <Typography
@@ -79,7 +84,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
             sx={{
               mb: 3,
               fontWeight: 600,
-              color: '#1a237e',
+              color: '#fff',
               textAlign: 'center'
             }}
           >
@@ -93,7 +98,8 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
                 mt: 1, 
                 mb: 2,
                 textAlign: 'center',
-                backgroundColor: '#ffebee',
+                backgroundColor: 'rgba(255, 0, 0, 0.1)',
+                color: '#ff6b6b',
                 p: 1,
                 borderRadius: 1
               }}
@@ -116,12 +122,24 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
               onChange={handleChange}
               sx={{
                 '& .MuiOutlinedInput-root': {
-                  '&.Mui-focused fieldset': {
-                    borderColor: '#1a237e',
+                  '& fieldset': {
+                    borderColor: '#333',
                   },
+                  '&:hover fieldset': {
+                    borderColor: '#666',
+                  },
+                  '&.Mui-focused fieldset': {
+                    borderColor: '#90caf9',
+                  },
+                  '& input': {
+                    color: '#fff',
+                  }
+                },
+                '& label': {
+                  color: '#999',
                 },
                 '& label.Mui-focused': {
-                  color: '#1a237e',
+                  color: '#90caf9',
                 },
               }}
             />
@@ -144,6 +162,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
                       aria-label="toggle password visibility"
                       onClick={() => setShowPassword(!showPassword)}
                       edge="end"
+                      sx={{ color: '#999' }}
                     >
                       {showPassword ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
@@ -152,12 +171,24 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
               }}
               sx={{
                 '& .MuiOutlinedInput-root': {
-                  '&.Mui-focused fieldset': {
-                    borderColor: '#1a237e',
+                  '& fieldset': {
+                    borderColor: '#333',
                   },
+                  '&:hover fieldset': {
+                    borderColor: '#666',
+                  },
+                  '&.Mui-focused fieldset': {
+                    borderColor: '#90caf9',
+                  },
+                  '& input': {
+                    color: '#fff',
+                  }
+                },
+                '& label': {
+                  color: '#999',
                 },
                 '& label.Mui-focused': {
-                  color: '#1a237e',
+                  color: '#90caf9',
                 },
               }}
             />
@@ -173,18 +204,33 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
               onChange={handleChange}
               sx={{
                 '& .MuiOutlinedInput-root': {
-                  '&.Mui-focused fieldset': {
-                    borderColor: '#1a237e',
+                  '& fieldset': {
+                    borderColor: '#333',
                   },
+                  '&:hover fieldset': {
+                    borderColor: '#666',
+                  },
+                  '&.Mui-focused fieldset': {
+                    borderColor: '#90caf9',
+                  },
+                  '& .MuiSelect-select': {
+                    color: '#fff',
+                  }
+                },
+                '& label': {
+                  color: '#999',
                 },
                 '& label.Mui-focused': {
-                  color: '#1a237e',
+                  color: '#90caf9',
                 },
+                '& .MuiMenuItem-root': {
+                  color: '#fff',
+                }
               }}
             >
-              <MenuItem value="student">Student</MenuItem>
-              <MenuItem value="teacher">Teacher</MenuItem>
-              <MenuItem value="admin">Admin</MenuItem>
+              <MenuItem value="student" sx={{ color: '#000' }}>Student</MenuItem>
+              <MenuItem value="teacher" sx={{ color: '#000' }}>Teacher</MenuItem>
+              <MenuItem value="admin" sx={{ color: '#000' }}>Admin</MenuItem>
             </TextField>
 
             {formData.role === 'teacher' && (
@@ -198,12 +244,24 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
                 onChange={handleChange}
                 sx={{
                   '& .MuiOutlinedInput-root': {
-                    '&.Mui-focused fieldset': {
-                      borderColor: '#1a237e',
+                    '& fieldset': {
+                      borderColor: '#333',
                     },
+                    '&:hover fieldset': {
+                      borderColor: '#666',
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: '#90caf9',
+                    },
+                    '& input': {
+                      color: '#fff',
+                    }
+                  },
+                  '& label': {
+                    color: '#999',
                   },
                   '& label.Mui-focused': {
-                    color: '#1a237e',
+                    color: '#90caf9',
                   },
                 }}
               />
@@ -220,12 +278,24 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
                 onChange={handleChange}
                 sx={{
                   '& .MuiOutlinedInput-root': {
-                    '&.Mui-focused fieldset': {
-                      borderColor: '#1a237e',
+                    '& fieldset': {
+                      borderColor: '#333',
                     },
+                    '&:hover fieldset': {
+                      borderColor: '#666',
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: '#90caf9',
+                    },
+                    '& input': {
+                      color: '#fff',
+                    }
+                  },
+                  '& label': {
+                    color: '#999',
                   },
                   '& label.Mui-focused': {
-                    color: '#1a237e',
+                    color: '#90caf9',
                   },
                 }}
               />
@@ -239,9 +309,10 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
                 mt: 3,
                 mb: 2,
                 py: 1.5,
-                backgroundColor: '#1a237e',
+                backgroundColor: '#90caf9',
+                color: '#000',
                 '&:hover': {
-                  backgroundColor: '#283593',
+                  backgroundColor: '#42a5f5',
                 },
                 fontSize: '1rem',
                 fontWeight: 600,
@@ -251,13 +322,13 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
             </Button>
 
             <Box sx={{ textAlign: 'center', mt: 2 }}>
-              <Typography variant="body2" color="text.secondary">
+              <Typography variant="body2" sx={{ color: '#999' }}>
                 Don't have an account?{' '}
                 <Button
                   onClick={() => navigate('/signup')}
                   sx={{
                     textTransform: 'none',
-                    color: '#1a237e',
+                    color: '#90caf9',
                     fontWeight: 600,
                     '&:hover': {
                       backgroundColor: 'transparent',
