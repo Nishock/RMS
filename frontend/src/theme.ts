@@ -4,15 +4,15 @@ export const theme = createTheme({
   palette: {
     mode: 'dark',
     primary: {
-      main: '#685FFF',
-      light: '#8C85FF',
-      dark: '#4B44CC',
+      main: '#685FFF',  // Matching the color from your screenshot
+      light: '#8B85FF',
+      dark: '#4842B3',
       contrastText: '#FFFFFF',
     },
     secondary: {
-      main: '#FF4B4B',
-      light: '#FF7373',
-      dark: '#CC3939',
+      main: '#22C55E',
+      light: '#4ADE80',
+      dark: '#16A34A',
       contrastText: '#FFFFFF',
     },
     background: {
@@ -43,32 +43,32 @@ export const theme = createTheme({
   typography: {
     fontFamily: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
     h1: {
-      fontSize: '3.5rem',
+      fontSize: '2.5rem',
       fontWeight: 700,
       letterSpacing: '-0.02em',
       lineHeight: 1.2,
     },
     h2: {
-      fontSize: '2.5rem',
-      fontWeight: 700,
+      fontSize: '2rem',
+      fontWeight: 600,
       letterSpacing: '-0.01em',
     },
     h3: {
-      fontSize: '2rem',
+      fontSize: '1.75rem',
       fontWeight: 600,
       letterSpacing: '-0.01em',
     },
     h4: {
       fontSize: '1.5rem',
-      fontWeight: 600,
+      fontWeight: 500,
     },
     h5: {
       fontSize: '1.25rem',
-      fontWeight: 600,
+      fontWeight: 500,
     },
     h6: {
       fontSize: '1rem',
-      fontWeight: 600,
+      fontWeight: 500,
     },
     button: {
       textTransform: 'none',
@@ -111,7 +111,7 @@ export const theme = createTheme({
         root: {
           background: 'rgba(26, 35, 50, 0.95)',
           backdropFilter: 'blur(10px)',
-          borderRadius: 16,
+          borderRadius: 12,
           border: '1px solid rgba(255, 255, 255, 0.1)',
           transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
           '&:hover': {
@@ -126,6 +126,8 @@ export const theme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: 8,
+          textTransform: 'none',
+          fontWeight: 500,
           padding: '8px 20px',
           transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
           '&:hover': {
@@ -148,13 +150,63 @@ export const theme = createTheme({
         },
       },
     },
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          '& .MuiOutlinedInput-root': {
+            '& fieldset': {
+              borderColor: 'rgba(255, 255, 255, 0.2)',
+              borderWidth: 2,
+            },
+            '&:hover fieldset': {
+              borderColor: 'rgba(104, 95, 255, 0.5)',
+            },
+            '&.Mui-focused fieldset': {
+              borderColor: '#685FFF',
+              borderWidth: 2,
+            },
+          },
+          '& .MuiInputLabel-root': {
+            color: 'rgba(255, 255, 255, 0.7)',
+          },
+          '& .MuiInputLabel-root.Mui-focused': {
+            color: '#685FFF',
+          },
+        },
+      },
+    },
     MuiIconButton: {
       styleOverrides: {
         root: {
           transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
           '&:hover': {
             transform: 'scale(1.1)',
+            backgroundColor: 'rgba(104, 95, 255, 0.1)',
           },
+        },
+      },
+    },
+    MuiSelect: {
+      styleOverrides: {
+        root: {
+          '& .MuiOutlinedInput-notchedOutline': {
+            borderColor: 'rgba(255, 255, 255, 0.2)',
+            borderWidth: 2,
+          },
+          '&:hover .MuiOutlinedInput-notchedOutline': {
+            borderColor: 'rgba(104, 95, 255, 0.5)',
+          },
+          '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+            borderColor: '#685FFF',
+            borderWidth: 2,
+          },
+        },
+      },
+    },
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          backgroundImage: 'none',
         },
       },
     },
@@ -189,4 +241,4 @@ export const theme = createTheme({
     '0 88px 176px rgba(0,0,0,0.1)',
     '0 92px 184px rgba(0,0,0,0.1)',
   ],
-}); 
+});

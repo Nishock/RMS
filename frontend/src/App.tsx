@@ -13,6 +13,7 @@ import { DashboardOverview } from './components/Admin/Dashboard/DashboardOvervie
 import { TeacherManagement } from './components/Admin/Teachers/TeacherManagement';
 import { StudentManagement } from './components/Admin/Students/StudentManagement';
 import { StudentDashboard } from './components/Student/Dashboard/StudentDashboard';
+import { TeacherDashboard } from './components/Teacher/Dashboard/TeacherDashboard';
 import { Quiz } from './components/Student/Quiz/Quiz';
 import { Revise } from './components/Student/Revise/Revise';
 import { Assignment } from './components/Student/Assignment/Assignment';
@@ -213,7 +214,10 @@ const AppContent: React.FC = () => {
               element={
                 auth.user?.role === 'teacher' ? (
                   <Routes>
-                    <Route path="dashboard" element={<div>Teacher Dashboard</div>} />
+                    <Route path="dashboard" element={<TeacherDashboard />} />
+                    <Route path="revise" element={<div>Revise Content</div>} />
+                    <Route path="quiz" element={<div>Create Quiz</div>} />
+                    <Route path="scripts" element={<div>Review Scripts</div>} />
                     <Route path="ai-assistant" element={<AIAssistant user={auth.user} />} />
                     <Route path="*" element={<Navigate to="dashboard" replace />} />
                   </Routes>

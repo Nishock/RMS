@@ -3,12 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@emotion/react": "^11.11.3",
-    "@emotion/styled": "^11.11.0",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
     "@fontsource/inter": "^5.0.16",
     "@fontsource/roboto": "^5.0.8",
-    "@mui/icons-material": "^5.15.6",
-    "@mui/material": "^5.15.6",
+    "@mui/icons-material": "^5.17.1",
+    "@mui/material": "^5.17.1",
     "@nivo/bar": "^0.84.0",
     "@nivo/core": "^0.84.0",
     "@nivo/line": "^0.84.0",
@@ -56,6 +56,8 @@
     ]
   },
   "devDependencies": {
-    "@types/recharts": "^1.8.29"
+    "@types/recharts": "^1.8.29",
+    "tailwindcss": "^4.1.4",
+    "tailwindcss-animate": "^1.0.7"
   }
 }

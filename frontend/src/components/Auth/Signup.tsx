@@ -79,84 +79,108 @@ export const Signup: React.FC<SignupProps> = ({ onSignup }) => {
     }));
   };
 
-  const textFieldSx = {
+  const inputStyles = {
     '& .MuiOutlinedInput-root': {
       '& fieldset': {
-        borderColor: '#333',
+        borderColor: 'rgba(255, 255, 255, 0.1)',
+        borderWidth: 2,
       },
       '&:hover fieldset': {
-        borderColor: '#666',
+        borderColor: 'rgba(147, 51, 234, 0.5)',
       },
       '&.Mui-focused fieldset': {
-        borderColor: '#90caf9',
+        borderColor: '#9333EA',
+        borderWidth: 2,
       },
       '& input': {
+        color: '#fff',
+      },
+      '& .MuiSelect-select': {
         color: '#fff',
       }
     },
     '& label': {
-      color: '#999',
+      color: 'rgba(255, 255, 255, 0.7)',
+      fontWeight: 500,
     },
     '& label.Mui-focused': {
-      color: '#90caf9',
+      color: '#9333EA',
     },
   };
 
   return (
-    <Container component="main" maxWidth="xs">
-      <Box
-        sx={{
-          marginTop: 8,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          minHeight: '100vh',
-          backgroundColor: '#121212',
-          pt: 4,
-          pb: 4,
-        }}
-      >
+    <Box
+      sx={{
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: 'linear-gradient(135deg, #0F172A 0%, #1E293B 100%)',
+        p: 2,
+      }}
+    >
+      <Container maxWidth="xs">
         <Paper
-          elevation={3}
+          elevation={24}
           sx={{
             p: 4,
-            width: '100%',
-            borderRadius: 2,
-            backgroundColor: '#1e1e1e',
-            border: '1px solid #333',
+            background: 'rgba(30, 41, 59, 0.7)',
+            backdropFilter: 'blur(20px)',
+            borderRadius: '16px',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
+            boxShadow: '0 4px 30px rgba(0, 0, 0, 0.3)',
           }}
         >
           <Typography
-            component="h1"
             variant="h4"
+            component="h1"
             sx={{
-              mb: 3,
-              fontWeight: 600,
+              mb: 1,
+              fontWeight: 700,
               color: '#fff',
-              textAlign: 'center'
+              textAlign: 'center',
+              letterSpacing: '-0.025em',
             }}
           >
             Create Account
           </Typography>
 
+          <Typography
+            variant="body2"
+            sx={{
+              mb: 4,
+              color: 'rgba(255, 255, 255, 0.7)',
+              textAlign: 'center',
+            }}
+          >
+            Sign up to get started
+          </Typography>
+
           {error && (
-            <Typography 
-              color="error" 
-              sx={{ 
-                mt: 1, 
-                mb: 2,
-                textAlign: 'center',
-                backgroundColor: 'rgba(255, 0, 0, 0.1)',
-                color: '#ff6b6b',
-                p: 1,
-                borderRadius: 1
+            <Box
+              sx={{
+                p: 2,
+                mb: 3,
+                borderRadius: 2,
+                backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                border: '1px solid rgba(239, 68, 68, 0.2)',
               }}
             >
-              {error}
-            </Typography>
+              <Typography
+                color="error"
+                variant="body2"
+                sx={{
+                  color: '#f87171',
+                  textAlign: 'center',
+                  fontWeight: 500,
+                }}
+              >
+                {error}
+              </Typography>
+            </Box>
           )}
 
-          <Box component="form" onSubmit={handleSubmit}>
+          <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
             <TextField
               margin="normal"
               required
@@ -166,7 +190,7 @@ export const Signup: React.FC<SignupProps> = ({ onSignup }) => {
               autoFocus
               value={formData.name}
               onChange={handleChange}
-              sx={textFieldSx}
+              sx={inputStyles}
             />
 
             <TextField
@@ -177,7 +201,7 @@ export const Signup: React.FC<SignupProps> = ({ onSignup }) => {
               label="Username"
               value={formData.username}
               onChange={handleChange}
-              sx={textFieldSx}
+              sx={inputStyles}
             />
 
             <TextField
@@ -189,7 +213,7 @@ export const Signup: React.FC<SignupProps> = ({ onSignup }) => {
               type="email"
               value={formData.email}
               onChange={handleChange}
-              sx={textFieldSx}
+              sx={inputStyles}
             />
 
             <TextField
@@ -200,7 +224,7 @@ export const Signup: React.FC<SignupProps> = ({ onSignup }) => {
               label="Phone Number"
               value={formData.phone}
               onChange={handleChange}
-              sx={textFieldSx}
+              sx={inputStyles}
             />
 
             <TextField
@@ -219,14 +243,14 @@ export const Signup: React.FC<SignupProps> = ({ onSignup }) => {
                       aria-label="toggle password visibility"
                       onClick={() => setShowPassword(!showPassword)}
                       edge="end"
-                      sx={{ color: '#999' }}
+                      sx={{ color: 'rgba(255, 255, 255, 0.7)' }}
                     >
                       {showPassword ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
                   </InputAdornment>
                 ),
               }}
-              sx={textFieldSx}
+              sx={inputStyles}
             />
 
             <TextField
@@ -245,14 +269,14 @@ export const Signup: React.FC<SignupProps> = ({ onSignup }) => {
                       aria-label="toggle confirm password visibility"
                       onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                       edge="end"
-                      sx={{ color: '#999' }}
+                      sx={{ color: 'rgba(255, 255, 255, 0.7)' }}
                     >
                       {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
                   </InputAdornment>
                 ),
               }}
-              sx={textFieldSx}
+              sx={inputStyles}
             />
 
             <TextField
@@ -264,19 +288,11 @@ export const Signup: React.FC<SignupProps> = ({ onSignup }) => {
               select
               value={formData.role}
               onChange={handleChange}
-              sx={{
-                ...textFieldSx,
-                '& .MuiSelect-select': {
-                  color: '#fff',
-                },
-                '& .MuiMenuItem-root': {
-                  color: '#fff',
-                }
-              }}
+              sx={inputStyles}
             >
-              <MenuItem value="student" sx={{ color: '#000' }}>Student</MenuItem>
-              <MenuItem value="teacher" sx={{ color: '#000' }}>Teacher</MenuItem>
-              <MenuItem value="admin" sx={{ color: '#000' }}>Admin</MenuItem>
+              <MenuItem value="student">Student</MenuItem>
+              <MenuItem value="teacher">Teacher</MenuItem>
+              <MenuItem value="admin">Admin</MenuItem>
             </TextField>
 
             {formData.role === 'teacher' && (
@@ -288,7 +304,7 @@ export const Signup: React.FC<SignupProps> = ({ onSignup }) => {
                 label="Teacher ID"
                 value={formData.teacherId}
                 onChange={handleChange}
-                sx={textFieldSx}
+                sx={inputStyles}
               />
             )}
 
@@ -301,7 +317,7 @@ export const Signup: React.FC<SignupProps> = ({ onSignup }) => {
                 label="Roll Number"
                 value={formData.rollNumber}
                 onChange={handleChange}
-                sx={textFieldSx}
+                sx={inputStyles}
               />
             )}
 
@@ -313,29 +329,34 @@ export const Signup: React.FC<SignupProps> = ({ onSignup }) => {
                 mt: 3,
                 mb: 2,
                 py: 1.5,
-                backgroundColor: '#90caf9',
-                color: '#000',
-                '&:hover': {
-                  backgroundColor: '#42a5f5',
-                },
-                fontSize: '1rem',
+                background: 'linear-gradient(to right, #9333EA, #4F46E5)',
+                color: '#fff',
                 fontWeight: 600,
+                fontSize: '1rem',
+                textTransform: 'none',
+                borderRadius: '8px',
+                '&:hover': {
+                  background: 'linear-gradient(to right, #7E22CE, #4338CA)',
+                  boxShadow: '0 10px 15px -3px rgba(147, 51, 234, 0.3)',
+                },
+                transition: 'all 0.2s ease-in-out',
               }}
             >
-              Sign Up
+              Create Account
             </Button>
 
             <Box sx={{ textAlign: 'center', mt: 2 }}>
-              <Typography variant="body2" sx={{ color: '#999' }}>
+              <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.7)' }}>
                 Already have an account?{' '}
                 <Button
                   onClick={() => navigate('/login')}
                   sx={{
                     textTransform: 'none',
-                    color: '#90caf9',
+                    color: '#9333EA',
                     fontWeight: 600,
                     '&:hover': {
                       backgroundColor: 'transparent',
+                      color: '#7E22CE',
                       textDecoration: 'underline',
                     },
                   }}
@@ -346,7 +367,7 @@ export const Signup: React.FC<SignupProps> = ({ onSignup }) => {
             </Box>
           </Box>
         </Paper>
-      </Box>
-    </Container>
+      </Container>
+    </Box>
   );
 }; 

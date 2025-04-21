@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Box, Container, Typography, Card, CircularProgress, Fade } from '@mui/material';
-import QuizIcon from '@mui/icons-material/Quiz';
+import DescriptionIcon from '@mui/icons-material/Description';
 
-export const Quiz: React.FC = () => {
+export const ScriptAnalyzer: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   return (
@@ -12,8 +12,8 @@ export const Quiz: React.FC = () => {
       color: '#fff',
       py: 4,
     }}>
-      {/* Header */}
       <Container maxWidth="xl">
+        {/* Header */}
         <Fade in timeout={1000}>
           <Box sx={{ 
             mb: 4,
@@ -26,16 +26,16 @@ export const Quiz: React.FC = () => {
               transform: 'translateX(-50%)',
               width: '200%',
               height: '200px',
-              background: 'radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, rgba(139, 92, 246, 0) 70%)',
+              background: 'radial-gradient(circle, rgba(16, 185, 129, 0.15) 0%, rgba(16, 185, 129, 0) 70%)',
               zIndex: 0,
               pointerEvents: 'none',
             }
           }}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
-              <QuizIcon sx={{ 
+              <DescriptionIcon sx={{ 
                 fontSize: 40, 
-                color: '#8B5CF6',
-                background: 'rgba(139, 92, 246, 0.1)',
+                color: '#10B981',
+                background: 'rgba(16, 185, 129, 0.1)',
                 p: 1,
                 borderRadius: '12px'
               }} />
@@ -49,7 +49,7 @@ export const Quiz: React.FC = () => {
                   WebkitTextFillColor: 'transparent',
                 }}
               >
-                Interactive Quiz
+                Script Analyzer
               </Typography>
             </Box>
             <Typography 
@@ -60,13 +60,13 @@ export const Quiz: React.FC = () => {
                 lineHeight: 1.6,
               }}
             >
-              Challenge yourself with AI-generated questions that adapt to your knowledge level. 
-              Get instant feedback and track your progress in real-time.
+              Upload your scripts and get instant AI-powered analysis, suggestions, and improvements. 
+              Perfect your writing with detailed feedback on structure, clarity, and style.
             </Typography>
           </Box>
         </Fade>
 
-        {/* Quiz Content */}
+        {/* Script Analyzer Content */}
         <Fade in timeout={1200}>
           <Card sx={{ 
             position: 'relative',
@@ -98,7 +98,7 @@ export const Quiz: React.FC = () => {
                   size={60}
                   thickness={4}
                   sx={{
-                    color: '#8B5CF6',
+                    color: '#10B981',
                     mb: 2,
                   }}
                 />
@@ -109,18 +109,18 @@ export const Quiz: React.FC = () => {
                     fontWeight: 600,
                   }}
                 >
-                  Preparing your quiz...
+                  Loading Script Analyzer...
                 </Typography>
               </Box>
             )}
             <iframe
-              src="https://app.relevanceai.com/agents/d7b62b/5cc7752400a6-4648-b47b-04fc92b47cae/f57ea786-ad54-4fe5-9d9c-b78b701ad6a1/share?hide_tool_steps=false&hide_file_uploads=false&hide_conversation_list=false&bubble_style=agent&primary_color=%23685FFF&bubble_icon=pd%2Fchat&input_placeholder_text=Type+your+message...&hide_logo=false"
+              src="https://app.relevanceai.com/agents/d7b62b/5cc7752400a6-4648-b47b-04fc92b47cae/0ee50392-6b9b-461c-9824-1ccf5796d6f6/share?hide_tool_steps=false&hide_file_uploads=false&hide_conversation_list=false&bubble_style=agent&primary_color=%23685FFF&bubble_icon=pd%2Fchat&input_placeholder_text=Type+your+message...&hide_logo=true"
               style={{
                 width: '100%',
                 height: '100%',
                 border: 'none',
               }}
-              title="Quiz AI Agent"
+              title="Script Analyzer AI Agent"
               onLoad={() => setIsLoading(false)}
             />
           </Card>

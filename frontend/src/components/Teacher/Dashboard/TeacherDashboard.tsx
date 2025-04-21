@@ -7,16 +7,13 @@ import AssignmentIcon from '@mui/icons-material/Assignment';
 import DescriptionIcon from '@mui/icons-material/Description';
 import CloseIcon from '@mui/icons-material/Close';
 
-export const StudentDashboard: React.FC = () => {
+export const TeacherDashboard: React.FC = () => {
   const navigate = useNavigate();
-  const [isScriptModalOpen, setIsScriptModalOpen] = useState(false);
-  const [isQuizModalOpen, setIsQuizModalOpen] = useState(false);
+  const [isAssignmentModalOpen, setIsAssignmentModalOpen] = useState(false);
 
   const handleCardClick = (feature: typeof features[0]) => {
-    if (feature.modalType === 'script') {
-      setIsScriptModalOpen(true);
-    } else if (feature.modalType === 'quiz') {
-      setIsQuizModalOpen(true);
+    if (feature.modalType === 'assignment') {
+      setIsAssignmentModalOpen(true);
     } else if (feature.path) {
       navigate(feature.path);
     }
@@ -26,40 +23,43 @@ export const StudentDashboard: React.FC = () => {
     {
       title: 'Revise a Topic',
       subtitle: 'Listen to AI-generated podcasts',
-      description: 'Learn through audio content tailored to your needs',
+      description: 'Create audio content tailored to student needs',
       icon: <HeadphonesIcon sx={{ fontSize: 32 }} />,
       color: '#4361EE',
-      path: '/student/revise',
+      textColor: '#60A5FA',
+      path: '/teacher/revise',
       modalType: null
     },
     {
-      title: 'Test My Skills',
+      title: 'Test Creation',
       subtitle: 'Interactive Quizzes',
-      description: 'Challenge yourself with adaptive questions',
+      description: 'Create adaptive questions and assessments',
       icon: <QuizIcon sx={{ fontSize: 32 }} />,
       color: '#7209B7',
-      path: null,
-      modalType: 'quiz',
-      iframeUrl: 'https://app.relevanceai.com/agents/d7b62b/5cc7752400a6-4648-b47b-04fc92b47cae/f57ea786-ad54-4fe5-9d9c-b78b701ad6a1/share?hide_tool_steps=false&hide_file_uploads=false&hide_conversation_list=false&bubble_style=agent&primary_color=%23685FFF&bubble_icon=pd%2Fchat&input_placeholder_text=Type+your+message...&hide_logo=false'
+      textColor: '#9333EA',
+      path: '/teacher/quiz',
+      modalType: null
     },
     {
       title: 'Generate Assignment',
       subtitle: 'AI-Powered Assignments',
-      description: 'Get personalized assignments with instant feedback',
+      description: 'Create personalized assignments with instant feedback',
       icon: <AssignmentIcon sx={{ fontSize: 32 }} />,
       color: '#F72585',
-      path: '/student/assignments',
-      modalType: null
+      textColor: '#EC4899',
+      path: null,
+      modalType: 'assignment',
+      iframeUrl: 'https://app.relevanceai.com/agents/d7b62b/5cc7752400a6-4648-b47b-04fc92b47cae/fa35cb15-8a38-4fb8-ad85-82d6dc7c8d15/share?hide_tool_steps=false&hide_file_uploads=false&hide_conversation_list=false&bubble_style=agent&primary_color=%23685FFF&bubble_icon=pd%2Fchat&input_placeholder_text=Type+your+message...&hide_logo=false'
     },
     {
-      title: 'Submit Script',
+      title: 'Review Scripts',
       subtitle: 'Script Analysis',
-      description: 'Get professional feedback on your scripts',
+      description: 'Review and provide feedback on student scripts',
       icon: <DescriptionIcon sx={{ fontSize: 32 }} />,
       color: '#10B981',
-      path: null,
-      modalType: 'script',
-      iframeUrl: 'https://app.relevanceai.com/agents/d7b62b/5cc7752400a6-4648-b47b-04fc92b47cae/0ee50392-6b9b-461c-9824-1ccf5796d6f6/share?hide_tool_steps=false&hide_file_uploads=false&hide_conversation_list=false&bubble_style=agent&primary_color=%23685FFF&bubble_icon=pd%2Fchat&input_placeholder_text=Type+your+message...&hide_logo=true'
+      textColor: '#34D399',
+      path: '/teacher/scripts',
+      modalType: null
     }
   ];
 
@@ -141,7 +141,7 @@ export const StudentDashboard: React.FC = () => {
           variant="h4"
           sx={{
             color: '#fff',
-            mb: 3,
+            mb: 4,
             textAlign: 'center',
             fontWeight: 600
           }}
@@ -156,27 +156,40 @@ export const StudentDashboard: React.FC = () => {
                 onClick={() => handleCardClick(feature)}
                 sx={{
                   p: 3,
-                  bgcolor: 'rgba(255, 255, 255, 0.03)',
-                  border: '1px solid rgba(255, 255, 255, 0.1)',
-                  borderRadius: '8px',
+                  height: '100%',
+                  bgcolor: 'rgba(15, 23, 42, 0.6)',
+                  backdropFilter: 'blur(10px)',
+                  borderRadius: '16px',
                   cursor: 'pointer',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  transition: 'transform 0.2s ease-in-out',
                   '&:hover': {
-                    bgcolor: 'rgba(255, 255, 255, 0.06)'
+                    transform: 'translateY(-4px)',
+                    bgcolor: 'rgba(15, 23, 42, 0.8)',
                   }
                 }}
               >
                 <Box sx={{ 
                   display: 'flex',
                   flexDirection: 'column',
-                  gap: 1.5
+                  height: '100%',
+                  gap: 2
                 }}>
                   <Box sx={{ 
-                    color: feature.color,
                     display: 'flex',
                     alignItems: 'center',
-                    gap: 1.5
+                    gap: 2
                   }}>
-                    {feature.icon}
+                    <Box
+                      sx={{
+                        color: feature.color,
+                        bgcolor: `${feature.color}15`,
+                        p: 1,
+                        borderRadius: '12px',
+                      }}
+                    >
+                      {feature.icon}
+                    </Box>
                     <Typography
                       variant="h6"
                       sx={{
@@ -189,9 +202,9 @@ export const StudentDashboard: React.FC = () => {
                   </Box>
                   
                   <Typography
-                    variant="subtitle2"
+                    variant="subtitle1"
                     sx={{
-                      color: feature.color,
+                      color: feature.textColor,
                       fontWeight: 500
                     }}
                   >
@@ -199,9 +212,10 @@ export const StudentDashboard: React.FC = () => {
                   </Typography>
                   
                   <Typography
-                    variant="body2"
+                    variant="body1"
                     sx={{
-                      color: 'rgba(255, 255, 255, 0.7)'
+                      color: 'rgba(255, 255, 255, 0.7)',
+                      flex: 1
                     }}
                   >
                     {feature.description}
@@ -213,22 +227,13 @@ export const StudentDashboard: React.FC = () => {
         </Grid>
       </Container>
 
-      {/* Script Analysis Modal */}
+      {/* Assignment Generation Modal */}
       <FeatureModal
-        open={isScriptModalOpen}
-        onClose={() => setIsScriptModalOpen(false)}
-        title="Script Analysis"
-        color="#10B981"
-        iframeUrl={features.find(f => f.modalType === 'script')?.iframeUrl || ''}
-      />
-
-      {/* Quiz Modal */}
-      <FeatureModal
-        open={isQuizModalOpen}
-        onClose={() => setIsQuizModalOpen(false)}
-        title="Interactive Quiz"
-        color="#7209B7"
-        iframeUrl={features.find(f => f.modalType === 'quiz')?.iframeUrl || ''}
+        open={isAssignmentModalOpen}
+        onClose={() => setIsAssignmentModalOpen(false)}
+        title="Generate Assignment"
+        color="#F72585"
+        iframeUrl={features.find(f => f.modalType === 'assignment')?.iframeUrl || ''}
       />
     </Box>
   );

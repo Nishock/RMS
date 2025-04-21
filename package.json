@@ -6,5 +6,9 @@
     "express-validator": "^7.2.1",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.13.2"
+  },
+  "devDependencies": {
+    "tailwindcss": "^4.1.4",
+    "tailwindcss-animate": "^1.0.7"
   }
 }
